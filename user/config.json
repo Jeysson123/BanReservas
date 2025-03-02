@@ -1,0 +1,6 @@
+{
+    "jwtSecret": "banreservaskey",
+    "jwtUser": "banreservasuser",
+    "jwtPassword": "banreservaspassword"
+  }
+  

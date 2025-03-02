@@ -1,0 +1,6 @@
+{
+    "productUrl": "http://localhost:5000/api/products",
+    "exchangeUrl": "https://v6.exchangerate-api.com/v6/${apiKey}/latest/{currency}",
+    "exchangeKey": "9b0d3c9214426676d618862d"
+  }
+  

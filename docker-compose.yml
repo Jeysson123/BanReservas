@@ -1,0 +1,48 @@
+version: '3'
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    container_name: zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    container_name: kafka
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENERS: PLAINTEXT://:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+    ports:
+      - "9092:9092"
+
+  app:
+    build:
+      context: ./product   # This points to the 'product' folder where the Dockerfile is
+      dockerfile: Dockerfile.yml  # This specifies the Dockerfile in that folder
+    container_name: products
+    depends_on:
+      - kafka
+    environment:
+      KAFKA_BROKER: kafka:9092
+    command: ["npm", "run", "start"]
+
+  mysql:
+    image: mysql:5.7
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD:    # Set your root password here
+      MYSQL_DATABASE: banreservas  # Replace with your actual database name
+      MYSQL_USER: root                    # Replace with your desired user
+      MYSQL_PASSWORD:         # Set a password for the user
+    ports:
+      - "3306:3306"                       # Map port 3306 from the container to host
+    volumes:
+      - mysql_data:/var/lib/mysql         # Persistent storage for the MySQL database
+
+volumes:
+  mysql_data:                            # Define the volume for MySQL data persistence
