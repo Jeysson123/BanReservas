@@ -1,6 +1,21 @@
 {
-    "jwtSecret": "banreservaskey",
-    "jwtUser": "banreservasuser",
-    "jwtPassword": "banreservaspassword"
+  "jwtSecret": "banreservaskey",
+  "jwtUser": "banreservasuser",
+  "jwtPassword": "banreservaspassword",
+  "database": {
+    "local": {
+      "host": "localhost",
+      "port": 3306,
+      "username": "root",
+      "password": "",
+      "database": "banreservas"
+    },
+    "dev": {
+      "host": "mysql-user",
+      "port": 3306,
+      "username": "root",
+      "password": "rootpassword",
+      "database": "banreservas"
+    }
   }
-  
+}

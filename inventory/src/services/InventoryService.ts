@@ -131,12 +131,19 @@ export class InventoryService implements IInventoryService, OnModuleInit {
 
   async getProducts(filters?: { currency?: string; token?: string; role?: string }): Promise<ProductDto[]> {
     try {
+
       const configPath = path.resolve(__dirname, '..', '..', 'config.json');
+
       const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
   
-      const { productUrl, exchangeUrl, exchangeKey } = config;
+      const env = process.env.NODE_ENV || 'local';
+  
+      const productUrl = config.productUrl[env];
+  
+      const { exchangeUrl, exchangeKey } = config;
   
       const headers: any = {};
+      
       if (filters?.token) {
         headers.Authorization = `Bearer ${filters.token}`;
       }
@@ -164,14 +171,13 @@ export class InventoryService implements IInventoryService, OnModuleInit {
         let convertedPrice = priceAsNumber;
   
         if (currency === 'USD') {
-          //API not return DOP Equivalent, so we need to apply this manually
+          // API not returning DOP equivalent, so we apply a manual conversion
           convertedPrice = priceAsNumber / 62.50;
         } else {
           convertedPrice = priceAsNumber * conversionRates[currency];
         }
         return new ProductDto(product.sku, product.name, convertedPrice);
       });
-  
     } catch (error) {
       console.error(error);
       throw new InternalServerErrorException('Error fetching stock or converting prices');
@@ -208,6 +214,19 @@ export class InventoryService implements IInventoryService, OnModuleInit {
       console.log(error);
       if (error instanceof NotFoundException) throw error;
       throw new InternalServerErrorException('Error deleting Product');
+    }
+  }
+
+  async findOne(id: number): Promise<Inventory | null> {
+    try {
+      const Product = await this.InventoryRepository.findOne({ where: { id } });
+      if (Product == null) {
+        throw new NotFoundException(`Product with ID ${id} not found`);
+      }
+      return Product;
+    } catch (error) {
+      if (error instanceof NotFoundException) throw error;
+      throw new InternalServerErrorException('Error fetching Product');
     }
   }
 }

@@ -1,6 +1,47 @@
 {
-    "productUrl": "http://localhost:5000/api/products",
-    "exchangeUrl": "https://v6.exchangerate-api.com/v6/${apiKey}/latest/{currency}",
-    "exchangeKey": "9b0d3c9214426676d618862d"
+  "productUrl": {
+    "local": "http://localhost:5000/api/products",
+    "dev": "http://product-service:5000/api/products"
+  },
+  "exchangeUrl": "https://v6.exchangerate-api.com/v6/${apiKey}/latest/{currency}",
+  "exchangeKey": "9b0d3c9214426676d618862d",
+  "jwtSecret": "banreservaskey",
+  "jwtUser": "banreservasuser",
+  "jwtPassword": "banreservaspassword",
+  "database": {
+    "local": {
+      "host": "localhost",
+      "port": 3306,
+      "username": "root",
+      "password": "",
+      "database": "banreservas"
+    },
+    "dev": {
+      "host": "mysql-user",
+      "port": 3306,
+      "username": "root",
+      "password": "rootpassword",
+      "database": "banreservas"
+    }
+  },
+  "kafka": {
+    "local": {
+      "host": "localhost",
+      "port": 9092
+    },
+    "dev": {
+      "host": "kafka-broker",
+      "port": 9093
+    }
+  },
+  "redis": {
+    "local": {
+      "host": "localhost",
+      "port": 6379
+    },
+    "dev": {
+      "host": "redis",
+      "port": 6379
+    }
   }
-  
+}

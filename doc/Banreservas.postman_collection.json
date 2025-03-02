@@ -1,0 +1,659 @@
+{
+	"info": {
+		"_postman_id": "352f0470-78f0-449c-ba21-6e5c7d970c46",
+		"name": "Banreservas",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27322269"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Authenticate",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"if (jsonData.token) {\r",
+									"    pm.environment.set(\"token\", jsonData.token);\r",
+									"    \r",
+									"    console.log(\"Token almacenado:\", jsonData.token);\r",
+									"} else {\r",
+									"    console.log(\"No se encontró un token en la respuesta.\");\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"{{token_client}}\",\r\n    \"password\": \"{{token_password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{token_api}}",
+							"host": [
+								"{{token_api}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "List",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{user_api}}",
+							"host": [
+								"{{user_api}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{user_api}}/{{current_id}}",
+							"host": [
+								"{{user_api}}"
+							],
+							"path": [
+								"{{current_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"Temp\",\r\n    \"password\": \"temp\",\r\n    \"role\": \"user\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{user_api}}",
+							"host": [
+								"{{user_api}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"if (jsonData.role) {\r",
+									"    pm.environment.set(\"role\", jsonData.role);\r",
+									"    \r",
+									"    console.log(\"Role almacenado:\", jsonData.role);\r",
+									"} else {\r",
+									"    console.log(\"No se encontró un rol en la respuesta.\");\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"TheJey\",\r\n    \"password\": \"Nin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{user_api}}/login",
+							"host": [
+								"{{user_api}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"TheJey\",\r\n    \"password\": \"Nin\",\r\n    \"role\": \"admin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{user_api}}/{{current_id}}",
+							"host": [
+								"{{user_api}}"
+							],
+							"path": [
+								"{{current_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{user_api}}/{{current_id}}",
+							"host": [
+								"{{user_api}}"
+							],
+							"path": [
+								"{{current_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "List",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "role",
+								"value": "{{role}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{product_api}}?category=splash6",
+							"host": [
+								"{{product_api}}"
+							],
+							"query": [
+								{
+									"key": "category",
+									"value": "splash6"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "role",
+								"value": "{{role}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{product_api}}/{{current_id}}",
+							"host": [
+								"{{product_api}}"
+							],
+							"path": [
+								"{{current_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "role",
+								"value": "{{role}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\" : \"Xbox One S\",\r\n    \"description\" : \"Xbox for Fun\",\r\n    \"category\" : \"Video Games\",\r\n    \"price\" : \"20000\",\r\n    \"sku\" : \"XBX\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{product_api}}",
+							"host": [
+								"{{product_api}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "role",
+								"value": "{{role}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\" : \"Xbox One SCARLET\",\r\n    \"description\" : \"Xbox for Fun\",\r\n    \"category\" : \"Video Games\",\r\n    \"price\" : \"32000\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{product_api}}/{{current_id}}",
+							"host": [
+								"{{product_api}}"
+							],
+							"path": [
+								"{{current_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "role",
+								"value": "{{role}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{product_api}}/{{current_id}}",
+							"host": [
+								"{{product_api}}"
+							],
+							"path": [
+								"{{current_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Inventory",
+			"item": [
+				{
+					"name": "UpdateStock",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "role",
+								"value": "{{role}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"sku\" : \"PSN\",\r\n    \"quantity\": 100,\r\n    \"incrementing\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{inventory_api}}",
+							"host": [
+								"{{inventory_api}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetStock",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "role",
+								"value": "{{role}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{inventory_api}}?sku=PSN",
+							"host": [
+								"{{inventory_api}}"
+							],
+							"query": [
+								{
+									"key": "sku",
+									"value": "PSN"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetStockHistorial",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "role",
+								"value": "{{role}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{inventory_api}}/stockhistorial?sku=PSN",
+							"host": [
+								"{{inventory_api}}"
+							],
+							"path": [
+								"stockhistorial"
+							],
+							"query": [
+								{
+									"key": "sku",
+									"value": "PSN"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetProducts",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "role",
+								"value": "{{role}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{inventory_api}}/products?currency=USD&token={{token}}&role={{role}}",
+							"host": [
+								"{{inventory_api}}"
+							],
+							"path": [
+								"products"
+							],
+							"query": [
+								{
+									"key": "currency",
+									"value": "USD"
+								},
+								{
+									"key": "token",
+									"value": "{{token}}"
+								},
+								{
+									"key": "role",
+									"value": "{{role}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetPriceHistorial",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "role",
+								"value": "{{role}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{inventory_api}}/pricehistorial?sku=XBX",
+							"host": [
+								"{{inventory_api}}"
+							],
+							"path": [
+								"pricehistorial"
+							],
+							"query": [
+								{
+									"key": "sku",
+									"value": "XBX"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { Inventory } from '../models/entities/Inventory';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { DatabaseModule } from '../modules/database.module';
+import { InventoryUpdateDto } from '../models/dtos/InventoryUpdateDto';
 
 describe('InventoryService (Integration Test)', () => {
   let service: InventoryService;
@@ -35,14 +36,15 @@ describe('InventoryService (Integration Test)', () => {
 
       const createdInventory = await service.create(Inventory as Inventory);
 
-      expect(createdInventory.id).toBeDefined();
+      expect(createdInventory?.id).toBeDefined();
 
-      expect(createdInventory.name).toBe(Inventory.name);
+      expect(createdInventory?.sku).toBe(Inventory.sku);
     });
   });
 
   describe('findOne', () => {
     it('should return a Inventory by id', async () => {
+
       const foundInventory = await service.findOne(testId);
 
       expect(foundInventory).toBeDefined();
@@ -57,7 +59,7 @@ describe('InventoryService (Integration Test)', () => {
   describe('update', () => {
     it('should update and return the updated Inventory', async () => {
 
-      await service.update(testId, { sku: '123' } as Inventory);
+      await service.updateStock(new InventoryUpdateDto('123', 10, true));
       
       const updatedInventory = await service.findOne(testId);
 
@@ -65,7 +67,7 @@ describe('InventoryService (Integration Test)', () => {
     });
 
     it('should return null if Inventory does not exist', async () => {
-      const result = await service.update(999, { sku: '123' } as Inventory);
+      const result = await service.updateStock(new InventoryUpdateDto('123', 10, true));
       expect(result).toBeNull();
     });
   });
@@ -73,7 +75,7 @@ describe('InventoryService (Integration Test)', () => {
   describe('remove', () => {
     it('should delete a Inventory by id', async () => {
 
-      await service.remove(testId);
+      await service.remove('123');
 
       const deletedInventory = await service.findOne(testId);
 
@@ -81,7 +83,7 @@ describe('InventoryService (Integration Test)', () => {
     });
 
     it('should not throw error if Inventory does not exist', async () => {
-      await expect(service.remove(999)).resolves.toBeUndefined();
+      await expect(service.remove('123')).resolves.toBeUndefined();
     });
   });
 });

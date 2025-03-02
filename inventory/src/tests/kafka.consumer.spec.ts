@@ -17,7 +17,6 @@ jest.mock('kafkajs', () => {
 
 describe('KafkaConsumerService', () => {
   let service: KafkaConsumerService;
-  let consumer: any;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -25,7 +24,6 @@ describe('KafkaConsumerService', () => {
     }).compile();
 
     service = module.get<KafkaConsumerService>(KafkaConsumerService);
-    consumer = service['kafka'].consumer; // Access the private kafka consumer to mock it
   });
 
   it('should be defined', () => {
@@ -33,16 +31,24 @@ describe('KafkaConsumerService', () => {
   });
 
   it('should connect and subscribe to Kafka topic on consume', async () => {
-    const topic = { topic: 'test-topic' };
+    const topicObj = { topics: ['test-topic'] };
     const config = { eachMessage: jest.fn() };
-    await service.consume(topic, config);
-    expect(consumer.connect).toHaveBeenCalled();
-    expect(consumer.subscribe).toHaveBeenCalledWith(topic);
-    expect(consumer.run).toHaveBeenCalledWith(config);
+
+    await service.consume(topicObj, config);
+
+    const consumerFactory = service['kafka'].consumer as jest.Mock;
+    const consumerInstance = consumerFactory.mock.results[0].value;
+
+    expect(consumerInstance.connect).toHaveBeenCalled();
+    expect(consumerInstance.subscribe).toHaveBeenCalledWith(topicObj);
+    expect(consumerInstance.run).toHaveBeenCalledWith(config);
   });
 
   it('should disconnect from Kafka on application shutdown', async () => {
     await service.onApplicationShutdown();
-    expect(consumer.disconnect).toHaveBeenCalled();
+
+    const consumerFactory = service['kafka'].consumer as jest.Mock;
+    const consumerInstance = consumerFactory.mock.results[0].value;
+    expect(consumerInstance.disconnect).toHaveBeenCalled();
   });
 });

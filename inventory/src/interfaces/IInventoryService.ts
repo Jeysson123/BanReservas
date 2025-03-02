@@ -13,4 +13,5 @@ export interface IInventoryService {
   getHistorialPrice(filters?: { id?: number; sku?: string }): Promise<PriceHistorialDto[]>;
   create(inventory: Inventory): Promise<Inventory | null>;
   remove(sku: string): Promise<void>;
+  findOne(id: number): Promise<Inventory | null>;
 }

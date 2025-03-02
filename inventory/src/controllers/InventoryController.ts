@@ -15,7 +15,6 @@ export class InventoryController {
 
   @Put()
   async update(@Body() Inventory: InventoryUpdateDto): Promise<Inventory | null> {
-    //this.kafkaProducerService.produce({topic: 'inventory.update', messages: [{value: JSON.stringify(Inventory)}]})
     return await this.InventoryService.updateStock(Inventory);
   }
 
