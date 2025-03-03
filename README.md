@@ -78,5 +78,7 @@ Welcome to **BanReservas**! This project is designed to be a **Product and Inven
 
 ---
 
+Workflow Diagram : https://lucid.app/lucidchart/b696c5a2-7eda-4fb0-bd38-d6226b493e61/edit?invitationId=inv_b75c7844-0724-4ebf-8baa-f3ac4db21255&page=0_0#
+
 🚀 Happy Coding! 🎉
 
