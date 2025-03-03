@@ -69,7 +69,12 @@ Welcome to **BanReservas**! This project is designed to be a **Product and Inven
    ```
 
 ### 4. Run with Docker:
+
    - Start the **BanReservas** container via **Docker Desktop**
+
+   ```bash
+   docker compose up --build
+   ```  
 
 ---
 
